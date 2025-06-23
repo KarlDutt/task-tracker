@@ -1,5 +1,3 @@
-#commit on nagu save, kui on mingi uus asi juurde lisatud, nt uus function
-#push = kõik tehtud, pane serverile
 import sys
 import json
 import os
@@ -29,8 +27,19 @@ def add():
         }
         items_list.append(task)
 
-add()
 
+#show all the tasks. only the description and status
+def list_tasks():
+    if len(sys.argv) >= 2 and sys.argv[1] == "list":
+        with open(FILENAME, "r", encoding="utf-8") as file:
+            listing_list = json.load(file)
+            for task in listing_list:
+                print(task["description"])
+                print(task["status"])
+
+
+add()
+list_tasks()
 #save new list to json
 with open("biglist.json", mode="w", encoding="utf-8") as write_file:
     json.dump(items_list, write_file, indent=4)

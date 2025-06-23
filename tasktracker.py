@@ -1,13 +1,27 @@
 #commit on nagu save, kui on mingi uus asi juurde lisatud, nt uus function
 #push = kõik tehtud, pane serverile
 import sys
-print(sys.argv)
+import json
+import os
+import uuid
 
-biglist = []
+FILENAME = "biglist.json"
 
+#read json or create new if there's none
+if os.path.exists(FILENAME):
+    with open(FILENAME, "r", encoding="utf-8") as file:
+        items_list = json.load(file)
+else:
+    items_list = []
+
+#add an item to list
 def add():
     if len(sys.argv) >= 2 and sys.argv[1] == "add":
-        biglist.append(sys.argv[2])
+        items_list.append(sys.argv[2])
 
 add()
-print(biglist)
+
+#save new list to json
+with open("biglist.json", mode="w", encoding="utf-8") as write_file:
+    json.dump(items_list, write_file)
+

@@ -7,7 +7,6 @@ from datetime import datetime
 FILENAME = "biglist.json"
 def now_time():
     return datetime.now().isoformat()
-
 #read json or create new if there's none
 if os.path.exists(FILENAME) and os.path.getsize(FILENAME) > 0:
     with open(FILENAME, "r", encoding="utf-8") as file:
@@ -16,8 +15,9 @@ else:
     items_list = []
 
 #add an item to list
+#tasktracker.py add "description"
 def add():
-    if len(sys.argv) >= 2 and sys.argv[1] == "add":
+    if len(sys.argv) >= 3 and sys.argv[1] == "add":
 
         task = {
             "id": str(uuid.uuid1()),
@@ -27,6 +27,8 @@ def add():
             "updatedAt": now_time()
         }
         items_list.append(task)
+    else:
+        print("wrong command, didn't write description")
 
 
 #show all the tasks. only the description and status
@@ -35,6 +37,8 @@ def list_tasks():
     if len(sys.argv) >= 3 and sys.argv[1] == "list" and sys.argv[2] in ["all", "done", "in progress", "not done"]:
         filter_status = sys.argv[2]
         enumerate_status(filter_status)
+    else:
+        print("wrong command")
         
 
 def enumerate_status(filter_status):
@@ -81,9 +85,28 @@ def update_task():
                      task["updatedAt"] = now_time()
                      print("task updated") 
 
-add()
-list_tasks()
-update_task()
-#save new list to json
-with open("biglist.json", mode="w", encoding="utf-8") as write_file:
-    json.dump(items_list, write_file, indent=4)
+
+def main():
+    if len(sys.argv) < 2:
+        print("no command provided. use list, update, add or remove")
+        return
+    
+    command = sys.argv[1]
+
+    if command == "add":
+        add()
+    elif command == "update":
+        update_task()
+    elif command == "list":
+        list_tasks()
+    else:
+        print("unknown command, use list, update, add or remove")
+
+    #save new list to json
+    with open("biglist.json", mode="w", encoding="utf-8") as write_file:
+        json.dump(items_list, write_file, indent=4)
+
+
+if __name__ == "__main__":
+    main()
+

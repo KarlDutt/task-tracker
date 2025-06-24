@@ -31,9 +31,23 @@ def add():
 #show all the tasks. only the description and status
 def list_tasks():
     if len(sys.argv) >= 2 and sys.argv[1] == "list":
-            for task in items_list:
-                print(task["description"])
-                print(task["status"])
+            for i, task in enumerate(items_list, start=1):
+                status_str = ""
+                #1. watch tv. not done
+                print(f"{i}. {task['description']}")
+
+                if  task["status"] == str(0):
+                    status_str = "not done"
+
+                elif task["status"] == str(1):
+                    status_str = "in progress"
+
+                elif task["status"] == str(2):
+                    status_str = "done"
+                else:
+                    print("status is unknown")
+
+                print(status_str)
 
 #update using description
 #can update task name. can update status. always needs to add updatedAt

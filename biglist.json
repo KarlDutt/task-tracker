@@ -2,14 +2,14 @@
     {
         "id": "3044bc17-502c-11f0-a5ce-7085c2f4c0df",
         "description": "buy cheese cake for joe",
-        "status": 0,
+        "status": "0",
         "createdAt": "2025-06-23T15:18:36.707944",
         "updatedAt": "2025-06-23T15:18:36.707944"
     },
     {
         "id": "a28c7e89-504c-11f0-b8d4-7085c2f4c0df",
         "description": "watch tv",
-        "status": 2,
+        "status": "2",
         "createdAt": "2025-06-23T19:10:52.333837",
         "updatedAt": "2025-06-23T19:52:14.587584"
     }

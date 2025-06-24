@@ -5,7 +5,8 @@ import uuid
 from datetime import datetime
 
 FILENAME = "biglist.json"
-current_time = datetime.now().isoformat()
+def now_time():
+    return datetime.now().isoformat()
 
 #read json or create new if there's none
 if os.path.exists(FILENAME) and os.path.getsize(FILENAME) > 0:
@@ -22,32 +23,38 @@ def add():
             "id": str(uuid.uuid1()),
             "description": sys.argv[2],
             "status": 0, #0=incomplete, 1= in progress, 2= completed
-            "createdAt": current_time,
-            "updatedAt": current_time
+            "createdAt": now_time(),
+            "updatedAt": now_time()
         }
         items_list.append(task)
 
 
 #show all the tasks. only the description and status
+#tasktracker.py list "done" / "all"
 def list_tasks():
-    if len(sys.argv) >= 2 and sys.argv[1] == "list":
-            for i, task in enumerate(items_list, start=1):
-                status_str = ""
+    if len(sys.argv) >= 3 and sys.argv[1] == "list" and sys.argv[2] in ["all", "done", "in progress", "not done"]:
+        filter_status = sys.argv[2]
+        enumerate_status(filter_status)
+        
+
+def enumerate_status(filter_status):
+    for i, task in enumerate(items_list, start=1):
+        status_str = ""
                 #1. watch tv. not done
-                print(f"{i}. {task['description']}")
+        if  task["status"] == 0:
+            status_str = "not done"
 
-                if  task["status"] == str(0):
-                    status_str = "not done"
+        elif task["status"] == 1:
+            status_str = "in progress"
 
-                elif task["status"] == str(1):
-                    status_str = "in progress"
+        elif task["status"] == 2:
+            status_str = "done"
+        else:
+            print("status is unknown")
 
-                elif task["status"] == str(2):
-                    status_str = "done"
-                else:
-                    print("status is unknown")
+        if filter_status == "all" or status_str == filter_status:
+            print(f"{i}. {task['description']} - {status_str}")
 
-                print(status_str)
 
 #update using description
 #can update task name. can update status. always needs to add updatedAt
@@ -58,17 +65,20 @@ def update_task():
         for task in items_list:
             if task["description"] == sys.argv[2]:
                 updated = False
+                #change status
                 if sys.argv[3] == "completed":
                     task["status"] = 2
                     updated = True
                 elif sys.argv[3] == "in progress":
                     task["status"] = 1
                     updated = True
+
+                #change name
                 elif sys.argv[3] == "to":
                         task["description"] = sys.argv[4]
                         updated = True
                 if updated:
-                     task["updatedAt"] = datetime.now().isoformat()
+                     task["updatedAt"] = now_time()
                      print("task updated") 
 
 add()

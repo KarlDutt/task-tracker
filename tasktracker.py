@@ -30,6 +30,24 @@ def add():
     else:
         print("wrong command, didn't write description")
 
+#tasktracker.py delete "description"
+def delete():
+    if len(sys.argv) >= 3 and sys.argv[1] == "delete":
+        for i, task in enumerate(items_list):
+            if sys.argv[2] == task["description"]:
+                items_list.remove(task)
+                print(f"{task['description']} removed from list")
+                return
+            if sys.argv[2] == task["id"]:
+                items_list.remove(task)
+                print(f"{task['id']} removed from list")
+                return
+        else:
+            print("sorry no such task")
+
+
+
+
 
 #show all the tasks. only the description and status
 #tasktracker.py list "done" / "all"
@@ -60,8 +78,6 @@ def enumerate_status(filter_status):
             print(f"{i}. {task['description']} - {status_str}")
 
 
-#update using description
-#can update task name. can update status. always needs to add updatedAt
 #tasktracker.py update "watch tv" "completed" / to "watch tv later"
 def update_task():
     if len(sys.argv) >= 4 and sys.argv[1] == "update":
@@ -99,6 +115,8 @@ def main():
         update_task()
     elif command == "list":
         list_tasks()
+    elif command == "delete":
+        delete()
     else:
         print("unknown command, use list, update, add or remove")
 
